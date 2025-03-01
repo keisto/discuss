@@ -1,5 +1,5 @@
 'use server'
 
-export function createTopic() {
+export async function createTopic() {
   // TODO: Revalidate home page
 }
