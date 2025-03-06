@@ -1,21 +1,21 @@
-"use server";
+'use server'
 
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
-import { auth } from "@/auth";
-import { db } from "@/db";
-import paths from "@/paths";
+import { revalidatePath } from 'next/cache'
+import { z } from 'zod'
+import { auth } from '@/auth'
+import { db } from '@/db'
+import paths from '@/paths'
 
 const createCommentSchema = z.object({
   content: z.string().min(3),
-});
+})
 
 interface CreateCommentFormState {
   errors: {
-    content?: string[];
-    _form?: string[];
-  };
-  success?: boolean;
+    content?: string[]
+    _form?: string[]
+  }
+  success?: boolean
 }
 
 export async function createComment(
@@ -24,22 +24,22 @@ export async function createComment(
   formData: FormData
 ): Promise<CreateCommentFormState> {
   const result = createCommentSchema.safeParse({
-    content: formData.get("content"),
-  });
+    content: formData.get('content'),
+  })
 
   if (!result.success) {
     return {
       errors: result.error.flatten().fieldErrors,
-    };
+    }
   }
 
-  const session = await auth();
+  const session = await auth()
   if (!session || !session.user || !session.user.id) {
     return {
       errors: {
-        _form: ["You must sign in to do this."],
+        _form: ['You must sign in to do this.'],
       },
-    };
+    }
   }
 
   try {
@@ -50,38 +50,38 @@ export async function createComment(
         parentId: parentId,
         userId: session.user.id,
       },
-    });
+    })
   } catch (err) {
     if (err instanceof Error) {
       return {
         errors: {
           _form: [err.message],
         },
-      };
+      }
     } else {
       return {
         errors: {
-          _form: ["Something went wrong..."],
+          _form: ['Something went wrong...'],
         },
-      };
+      }
     }
   }
 
   const topic = await db.topic.findFirst({
     where: { posts: { some: { id: postId } } },
-  });
+  })
 
   if (!topic) {
     return {
       errors: {
-        _form: ["Failed to revalidate topic"],
+        _form: ['Failed to revalidate topic'],
       },
-    };
+    }
   }
 
-  revalidatePath(paths.postShow(topic.slug, postId));
+  revalidatePath(paths.postsShow(topic.slug, postId))
   return {
     errors: {},
     success: true,
-  };
+  }
 }
