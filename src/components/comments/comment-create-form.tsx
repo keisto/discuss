@@ -1,8 +1,8 @@
 'use client'
 
-import { useActionState } from 'react'
-import { useEffect, useRef, useState } from 'react'
-import { Textarea, Button } from '@heroui/react'
+import {useActionState} from 'react'
+import {useEffect, useRef, useState} from 'react'
+import {Textarea, Button} from '@heroui/react'
 import FormButton from '@/components/common/form-button'
 import * as actions from '@/actions'
 
@@ -12,10 +12,10 @@ interface CommentCreateFormProps {
   startOpen?: boolean
 }
 
-export default function CommentCreateForm({ postId, parentId, startOpen }: CommentCreateFormProps) {
+export default function CommentCreateForm({postId, parentId, startOpen}: CommentCreateFormProps) {
   const [open, setOpen] = useState(startOpen)
   const ref = useRef<HTMLFormElement | null>(null)
-  const [formState, action, isPending] = useActionState(actions.createComment.bind(null, { postId, parentId }), {
+  const [formState, action, isPending] = useActionState(actions.createComment.bind(null, {postId, parentId}), {
     errors: {},
   })
 
@@ -51,7 +51,7 @@ export default function CommentCreateForm({ postId, parentId, startOpen }: Comme
 
   return (
     <div>
-      <Button size="sm" variant="light" onClick={() => setOpen(!open)}>
+      <Button size="sm" variant="light" onPress={() => setOpen(!open)}>
         Reply
       </Button>
       {open && form}

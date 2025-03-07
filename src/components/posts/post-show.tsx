@@ -1,13 +1,14 @@
-import { db } from '@/db'
-import { notFound } from 'next/navigation'
+import {db} from '@/db'
+import {notFound} from 'next/navigation'
 
 interface PostShowProps {
   postId: string
 }
 
-export default async function PostShow({ postId }: PostShowProps) {
+export default async function PostShow({postId}: PostShowProps) {
+  await new Promise((resolve) => setTimeout(resolve, 3000))
   const post = await db.post.findFirst({
-    where: { id: postId },
+    where: {id: postId},
   })
 
   if (!post) {
