@@ -5,6 +5,7 @@ import CommentCreateForm from '@/components/comments/comment-create-form'
 import paths from '@/paths'
 import { fetchCommentsByPostId } from '@/db/queries/comments'
 import { Suspense } from 'react'
+import PostShowLoading from '@/components/posts/post-show-loading'
 
 interface Props {
   params: Promise<{
@@ -21,7 +22,7 @@ export default async function PostShowPage({ params }: Props) {
       <Link className="underline decoration-solid" href={paths.topicsShow(slug)}>
         {'< '}Back to {slug}
       </Link>
-      <Suspense fallback={<div>Loading ... </div>}>
+      <Suspense fallback={<PostShowLoading />}>
         <PostShow postId={postId} />
       </Suspense>
       <CommentCreateForm postId={postId} startOpen />
