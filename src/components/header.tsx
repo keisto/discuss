@@ -1,7 +1,8 @@
 import Link from 'next/link'
-import { Navbar, NavbarBrand, NavbarItem, NavbarContent, Input } from '@heroui/react'
-import React from 'react'
+import { Navbar, NavbarBrand, NavbarItem, NavbarContent } from '@heroui/react'
+import React, { Suspense } from 'react'
 import HeaderAuth from './header-auth'
+import SearchInput from './search-input'
 
 export default async function Header() {
   return (
@@ -14,7 +15,9 @@ export default async function Header() {
 
       <NavbarContent justify="center">
         <NavbarItem>
-          <Input />
+          <Suspense>
+            <SearchInput />
+          </Suspense>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
